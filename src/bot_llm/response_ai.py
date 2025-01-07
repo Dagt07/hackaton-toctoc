@@ -2,6 +2,7 @@ from openai import OpenAI
 from definitions import ROOT_DIR
 import yaml
 import os
+import json
 from dotenv import load_dotenv
 
 load_dotenv() # Load environment variables from .env file
@@ -39,9 +40,10 @@ class ResponseAI:
     def first_stage(self, data):
         FIRST_STAGE_MESSAGE = self.queries.get("preparse")
         response = self._complete_response(data, FIRST_STAGE_MESSAGE)
-        intent = response.choices[0].message.content
-        print(intent)
-        #self.query_LLM(intent, data)
+        intent_dict = response.choices[0].message.content
+        json_intent = json.loads(intent_dict)
+        print(json_intent)
+        self.query_LLM(json_intent["intent"], data)
 
     # Probably this method could replace every upper method
     def query_LLM(self, query_name, data):
@@ -49,17 +51,19 @@ class ResponseAI:
         response = ""
 
         if query_name == "buscar":
-            MESSAGE = query.get("buscar")
+            MESSAGE = self.queries.get("buscar")
             response = self._complete_response(data, MESSAGE)
             data = response.choices[0].message.content
 
         if query_name == "tasar":
-            MESSAGE = query.get("tasar")
+            MESSAGE = self.queries.get("tasar")
+            data += "en la comuna Las condes"
             response = self._complete_response(data, MESSAGE)
             data = response.choices[0].message.content
+            print(data)
 
         if query_name == "hipotecario":
-            MESSAGE = query.get("hipotecario")
+            MESSAGE = self.queries.get("hipotecario")
             response = self._complete_response(data, MESSAGE)
             data = response.choices[0].message.content
 
