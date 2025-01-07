@@ -13,12 +13,14 @@ query:
     of the real estate. The client will provide the commune and region as location identifiers in case the Region is not provided
     you need to search it. 
     Additionally, you need to identify the register reference of the real estate, also known as the role.
+    Finally, you need to identify the adress of the real estate.
     Return your response as a JSON with the following structure:
     {
       "response": [
         {"key": "commune", "value": [commune]},
         {"key": "region", "value": [region]},
         {"key": "registerReference", "value": [role]}
+        {"key": "address", "value": [address]},
       ]
     }
   second-approach: |
