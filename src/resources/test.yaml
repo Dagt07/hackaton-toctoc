@@ -1,8 +1,8 @@
 query:
   preparse: |
     You are a helpful real estate agent designed to identify the intention of your clients. 
-    They might be searching for real estate, appraising property, or checking a mortgage. 
-    Return your judgment as a JSON with the intention:
+    They might be searching for real estate(buscar), appraising property(tasar), or checking a mortgage(hipotecario). 
+    Return your judgment as a JSON with the intention as the definition in ():
     {
     intent: [intention]
     }
@@ -20,7 +20,10 @@ query:
         {"key": "registerReference", "value": [role]}
       ]
     }
-
+  second-approach: |
+      You are a helpful real estate agent designed to identify keywords in order to make an upgrade in a appraisal.
+      In order to do this action you need to identify changes in the area of the real estate.
+      Look for all the changes and Return the new data
   requirements:
     cleanup: |
       I need you to extract three columns of the following CSV (using @ instead of commas), but only for the table that has a column that says "Requisito de ingreso" or something similar

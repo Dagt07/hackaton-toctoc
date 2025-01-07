@@ -15,5 +15,5 @@ def extract_data_from_message(data):
     return json.loads(answer)
 
 if __name__ == "__main__":
-    data = "Hola, quiero saber cuanto vale una casa que tengo en el cerro"
+    data = "Hola, necesito informacion para un credito"
     print(extract_data_from_message(data))
