@@ -40,7 +40,15 @@ document.addEventListener("DOMContentLoaded", () => {
     function addMessage(role, message) {
         const messageDiv = document.createElement("div");
         messageDiv.classList.add(role);
-        messageDiv.innerHTML = `<strong>${role === "user" ? "You" : "Bot"}:</strong> ${message}`;
+
+        const roleLabel = document.createElement("strong");
+        roleLabel.textContent = role === "user" ? "You:" : "Bot:";
+
+        const messageText = document.createTextNode(` ${message}`);
+
+        messageDiv.appendChild(roleLabel);
+        messageDiv.appendChild(messageText);
+
         chatBox.appendChild(messageDiv);
 
         // Desplazarse automáticamente hacia abajo
