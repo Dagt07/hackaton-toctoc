@@ -72,24 +72,17 @@ query:
     
     Additionally, you need to identify how much is the monthly income of the person, the type of the property, the value of the property if provided and 
     the amount requested by the user for the mortgage. 
-  
-    Finally, return your response as a JSON with the following structure and if you dont get some data change the value to false in
-    questions:
+
+    Keep in mind that the monthly income could be in words, we are looking for the number, for example doscientos 80mil is 280.000.
+
+    Finally, return your response as a JSON with the following structure:
     {
       "response": [
-        {"key": "borrowerInfo.monthlyIncome", "value": ""},
-        {"key": "mortgageDetails.propertyValue", "value": ""},
-        {"key": "mortgageDetails.requestedAmount", "value": ""},
-        {"key": "mortgageDetails.downPayment", "value": ""},
-        {"key": "mortgageDetails.term", "value": ""},
-        {"key": "mortgageDetails.propertyType", "value": ""}
-      ]
-      "questions": [
-        {"key": "borrowerInfo.monthlyIncome", "value": true},
-        {"key": "mortgageDetails.propertyValue", "value": true},
-        {"key": "mortgageDetails.requestedAmount", "value": true},
-        {"key": "mortgageDetails.downPayment", "value": true},
-        {"key": "mortgageDetails.term", "value": true},
-        {"key": "mortgageDetails.propertyType", "value": true}
+        {"key": "Renta", "value": ""},
+        {"key": "Valor de la propiedad", "value": ""},
+        {"key": "Monto solicitado", "value": ""},
+        {"key": "Pago inicial", "value": ""},
+        {"key": "Plazo de hipoteca", "value": ""},
+        {"key": "Tipo de propiedad", "value": ""}
       ]
     }

@@ -66,8 +66,9 @@ class ResponseAI:
 
         if query_name == "hipotecario":
             MESSAGE = self.queries.get("hipotecario")
-            data += "algo" # Use the chatbot here
+            data += "mi renta es de 1millon 500mil pesos" # Use the chatbot here
             response = self._complete_response(data, MESSAGE)
             data = response.choices[0].message.content
+            print(data)
 
         return response.choices[0].message.content
