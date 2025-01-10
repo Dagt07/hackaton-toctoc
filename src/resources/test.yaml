@@ -18,10 +18,10 @@ query:
     questions make sure you add the region if the commune is provided:
     {
       "response": [
-        {"key": "commune", "value": [commune]},
-        {"key": "region", "value": [region]},
-        {"key": "registerReference", "value": [role]}
-        {"key": "address", "value": [address]},
+          {"key": "Comuna", "value": [commune]},
+          {"key": "Region", "value": [region]},
+          {"key": "Rol", "value": [role]}
+          {"key": "Direccion", "value": [address]},
       ]
     }
   
@@ -31,10 +31,10 @@ query:
       Look for all the changes and Return the new data as:
       {
         "response": [
-          {"key": "commune", "value": [commune]},
-          {"key": "region", "value": [region]},
-          {"key": "registerReference", "value": [role]}
-          {"key": "address", "value": [address]},
+          {"key": "Comuna", "value": [commune]},
+          {"key": "Region", "value": [region]},
+          {"key": "Rol", "value": [role]}
+          {"key": "Direccion", "value": [address]},
         ]
       }
   
@@ -46,6 +46,8 @@ query:
     The type of property could be a house, an apartment, or something related to that.
     The operation means what the person is trying to do with that property, meaning renting it or buying it.
     Parking/storage mean if the property has them, and pet friendly should be a boolean that says if it allows animals.
+    The area value has to be a numeric number. If the user does not specify the number, then assign accordingly:
+    Small: assign 50, Medium: Assign 100, Big: Assign 150.
     {
     [serie_name]:
         {
