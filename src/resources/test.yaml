@@ -18,10 +18,10 @@ query:
     questions make sure you add the region if the commune is provided:
     {
       "response": [
-        {"key": "commune", "value": [commune]},
-        {"key": "region", "value": [region]},
-        {"key": "registerReference", "value": [role]}
-        {"key": "address", "value": [address]},
+          {"key": "Comuna", "value": [commune]},
+          {"key": "Region", "value": [region]},
+          {"key": "Rol", "value": [role]}
+          {"key": "Direccion", "value": [address]},
       ]
     }
   
@@ -31,10 +31,10 @@ query:
       Look for all the changes and Return the new data as:
       {
         "response": [
-          {"key": "commune", "value": [commune]},
-          {"key": "region", "value": [region]},
-          {"key": "registerReference", "value": [role]}
-          {"key": "address", "value": [address]},
+          {"key": "Comuna", "value": [commune]},
+          {"key": "Region", "value": [region]},
+          {"key": "Rol", "value": [role]}
+          {"key": "Direccion", "value": [address]},
         ]
       }
   
