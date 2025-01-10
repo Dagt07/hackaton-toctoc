@@ -5,6 +5,8 @@ import os
 import json
 from dotenv import load_dotenv
 
+import requests
+
 load_dotenv() # Load environment variables from .env file
 comunas = [
     {
@@ -1804,10 +1806,22 @@ class ResponseAI:
 
             if len(missing_fields) == 1 and (missing_fields[0] == "Rol" or missing_fields[0] == "Direccion"):
                 comuna_value = next((item['value'] for item in answer['response'] if item['key'] == 'Comuna'), None)
+                comuna_id=""
                 for item in comunas :
                     if item["descripcion"] == comuna_value:
                         comuna_id = item["idComuna"]
                         break
+
+                payload = {}
+
+                role_value = next((item["value"] for item in answer["response"] if item["key"] == "Rol"), None)
+                headers = {
+                'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkdlcmFyZG8gTXXDsW96IiwiaWF0IjoxNTE2MjM5MDIyLCJ1c2VyX2lkIjoiMTIzNCJ9.FpthiZ_xC_U0RlVnlvR-axVKCmUVoN200VXJ6FD8mAU'
+                }
+                url = f"https://gw.toctoc.com/1.0/info/role?role={role_value}&idCommune={comuna_id}"
+                print(url)
+                response = requests.request("GET", url, headers=headers, data=payload)
+                print(response)
         else:
             message = "¡Gracias por toda la información! Todo está completo."
             #llamar api
