@@ -13,7 +13,7 @@ class ResponseAI:
         self.temperature = temperature
         self.prefix_system_message = ""
 
-        stream = open("./test.yaml", "r")
+        stream = open(os.path.join(ROOT_DIR, "resources/test.yaml"), "r")
         self.queries = yaml.safe_load(stream).get("query")
         stream.close()
 
@@ -39,7 +39,7 @@ class ResponseAI:
     def first_stage(self, data):
         FIRST_STAGE_MESSAGE = self.queries.get("preparse")
         response = self._complete_response(data, FIRST_STAGE_MESSAGE)
-        intent = response.choices[0].message.content['intent']
+        intent = response.choices[0].message.content
         print(intent)
         #self.query_LLM(intent, data)
 
