@@ -1805,9 +1805,8 @@ class ResponseAI:
 
             print("missing_fields", missing_fields)
             if intent == "hipotecario":
-                if len(missing_fields) == 1 and (missing_fields[0] == "Tipo de propiedad"):
+                if "Tipo de propiedad" not in missing_fields and "Renta" not in missing_fields:
                     message = "¡Gracias por toda la información! Todo está completo."
-            
             if intent == "buscar":
                 if "Comuna" not in missing_fields and "Region" not in missing_fields and "Tipo de contrato" not in missing_fields:
                     message = "¡Gracias por toda la información! Todo está completo."
