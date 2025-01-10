@@ -34,25 +34,31 @@ class ResponseAI:
         )
         return response
 
+    def first_stage(self, data):
+        FIRST_STAGE_MESSAGE = self.queries.get("preparse")
+        response = self._complete_response(data, FIRST_STAGE_MESSAGE)
+        intent = response.choices[0].message.content['intent']
+        print(intent)
+        #self.query_LLM(intent, data)
+
     # Probably this method could replace every upper method
-    def query_LLM(
-        self, query_name, data, has_cleanup=True, has_analysis=True, list_of_series=[]
-    ):
+    def query_LLM(self, query_name, data):
         query = self.queries.get(query_name)
         response = ""
 
-        if has_cleanup:
-            CLEANUP_MESSAGE = query.get("cleanup")
-            response = self._complete_response(data, CLEANUP_MESSAGE)
+        if query_name == "buscar":
+            MESSAGE = query.get("buscar")
+            response = self._complete_response(data, MESSAGE)
             data = response.choices[0].message.content
 
-        if has_analysis:
-            ANALYSIS_MESSAGE = query.get("analysis")
-            response = self._complete_response(
-                data
-                + "also you have to make sure to use the following list of names for the series"
-                + str(list_of_series),
-                ANALYSIS_MESSAGE,
-            )
+        if query_name == "tasar":
+            MESSAGE = query.get("tasar")
+            response = self._complete_response(data, MESSAGE)
+            data = response.choices[0].message.content
+
+        if query_name == "hipotecario":
+            MESSAGE = query.get("hipotecario")
+            response = self._complete_response(data, MESSAGE)
+            data = response.choices[0].message.content
 
         return response.choices[0].message.content
