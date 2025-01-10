@@ -1784,6 +1784,7 @@ class ResponseAI:
         response = self._complete_response(data, FIRST_STAGE_MESSAGE)
         intent_dict = response.choices[0].message.content
         json_intent = json.loads(intent_dict)
+        intent = json_intent["intent"]
         answer = self.query_LLM(json_intent["intent"], data)
         answer = json.loads(answer)
 
@@ -1803,36 +1804,43 @@ class ResponseAI:
             message = f"Parece que falta información en los siguientes campos: {missing_fields_str}. ¿Podrías proporcionarnos los datos faltantes?"
 
             print("missing_fields", missing_fields)
+            if intent == "hipotecario":
+                if len(missing_fields) == 1 and (missing_fields[0] == "Tipo de propiedad"):
+                    message = "¡Gracias por toda la información! Todo está completo."
+            
+            if intent == "buscar":
+                if "Comuna" not in missing_fields and "Region" not in missing_fields and "Tipo de contrato" not in missing_fields:
+                    message = "¡Gracias por toda la información! Todo está completo."
+            if intent  == "tasar":
+                if len(missing_fields) == 1 and (missing_fields[0] == "Rol" or missing_fields[0] == "Direccion"):
+                    comuna_value = next((item['value'] for item in answer['response'] if item['key'] == 'Comuna'), None)
+                    comuna_id=""
+                    for item in comunas :
+                        if item["descripcion"] == comuna_value:
+                            comuna_id = item["idComuna"]
+                            break
 
-            if len(missing_fields) == 1 and (missing_fields[0] == "Rol" or missing_fields[0] == "Direccion"):
-                comuna_value = next((item['value'] for item in answer['response'] if item['key'] == 'Comuna'), None)
-                comuna_id=""
-                for item in comunas :
-                    if item["descripcion"] == comuna_value:
-                        comuna_id = item["idComuna"]
-                        break
+                    payload = {}
 
-                payload = {}
-
-                role_value = next((item["value"] for item in answer["response"] if item["key"] == "Rol"), None)
-                headers = {
-                'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkdlcmFyZG8gTXXDsW96IiwiaWF0IjoxNTE2MjM5MDIyLCJ1c2VyX2lkIjoiMTIzNCJ9.FpthiZ_xC_U0RlVnlvR-axVKCmUVoN200VXJ6FD8mAU'
-                }
-                url = f"https://gw.toctoc.com/1.0/info/role?role={role_value}&idCommune={comuna_id}"
-                print(url)
-                response = requests.request("GET", url, headers=headers, data=payload)
-                response = response.json()
-                latitude, longitude = response["data"]["location"]["coordinates"][1], response["data"]["location"]["coordinates"][0]
-                property_type = response["data"]["housingType"]["housingTypeName"]
-                usable_area = response["data"]["information"]["areaofConstructionLine"]
-                #using this as an example ("https://gw.toctoc.com/1.0/valorization/appraisal/sale?lat=40.7128&long=-74.006&propertyFamilyTypeId=1&usableArea=10", requestOptions)
-                url = f"https://gw.toctoc.com/1.0/valorization/appraisal/sale?lat={latitude}&long={longitude}&propertyFamilyTypeId=1&usableArea={usable_area}"
-                response = requests.request("GET", url, headers=headers, data=payload)
-                response = response.json()
-                tasamin = response["data"]["minPrice"]
-                tasamax = response["data"]["maxPrice"]
-                message = f"El precio de tu propiedad oscila entre {tasamin} y {tasamax} UF"
-                print(message)
+                    role_value = next((item["value"] for item in answer["response"] if item["key"] == "Rol"), None)
+                    headers = {
+                    'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkdlcmFyZG8gTXXDsW96IiwiaWF0IjoxNTE2MjM5MDIyLCJ1c2VyX2lkIjoiMTIzNCJ9.FpthiZ_xC_U0RlVnlvR-axVKCmUVoN200VXJ6FD8mAU'
+                    }
+                    url = f"https://gw.toctoc.com/1.0/info/role?role={role_value}&idCommune={comuna_id}"
+                    print(url)
+                    response = requests.request("GET", url, headers=headers, data=payload)
+                    response = response.json()
+                    latitude, longitude = response["data"]["location"]["coordinates"][1], response["data"]["location"]["coordinates"][0]
+                    property_type = response["data"]["housingType"]["housingTypeName"]
+                    usable_area = response["data"]["information"]["areaofConstructionLine"]
+                    #using this as an example ("https://gw.toctoc.com/1.0/valorization/appraisal/sale?lat=40.7128&long=-74.006&propertyFamilyTypeId=1&usableArea=10", requestOptions)
+                    url = f"https://gw.toctoc.com/1.0/valorization/appraisal/sale?lat={latitude}&long={longitude}&propertyFamilyTypeId=1&usableArea={usable_area}"
+                    response = requests.request("GET", url, headers=headers, data=payload)
+                    response = response.json()
+                    tasamin = response["data"]["minPrice"]
+                    tasamax = response["data"]["maxPrice"]
+                    message = f"El precio de tu propiedad oscila entre {tasamin} y {tasamax} UF"
+                    print(message)
         else:
             message = "¡Gracias por toda la información! Todo está completo."
             #llamar api
@@ -1846,7 +1854,6 @@ class ResponseAI:
 
         if query_name == "buscar":
             MESSAGE = self.queries.get("buscar")
-            data += "algo" # Use the chatbot here
             response = self._complete_response(data, MESSAGE)
             data = response.choices[0].message.content
             print(data)
@@ -1858,7 +1865,6 @@ class ResponseAI:
 
         if query_name == "hipotecario":
             MESSAGE = self.queries.get("hipotecario")
-            data += "mi renta es de 1millon 500mil pesos" # Use the chatbot here
             response = self._complete_response(data, MESSAGE)
             data = response.choices[0].message.content
             print(data)

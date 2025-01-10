@@ -44,26 +44,25 @@ query:
     The person will say where the property should be locate it, and you have to interpret it as commune, if possible, and region if not.
     If region is not given, you should fill that according to Chilean geography.
     The type of property could be a house, an apartment, or something related to that.
-    The operation means what the person is trying to do with that property, meaning renting it or buying it.
+    The operation means what the person is trying to do with that property, meaning renting it or buying it, THIS IS VERY IMPORTANT.
     Parking/storage mean if the property has them, and pet friendly should be a boolean that says if it allows animals.
     The area value has to be a numeric number. If the user does not specify the number, then assign accordingly:
-    Small: assign 50, Medium: Assign 100, Big: Assign 150.
+    Small: assign 50, Medium: Assign 100, Big: Assign 150. Also if you dont get some data change the value to false, otherwise return the value:
     {
-    [serie_name]:
-        {
-            Comuna: [commune]
-            Region: [region]
-            Tipo de propiedad: [type]
-            Tipo de contrato: [operation]
-            Habitaciones: [number]%
-            Baños: [number]%
-            Estacionamiento: [parking]
-            Bodega: [storage]
-            Area: [number]%
-            Precio máximo: [number]%
-            Precio mínimo: [number]%
-            Amigable con animales: [petfriendly]
-        }
+      "response": [
+        {"key": "Comuna", "value": [commune]},
+        {"key": "Region", "value": [region]},
+        {"key": "Tipo de propiedad", "value": [type]},
+        {"key": "Tipo de contrato", "value": [operation]},
+        {"key": "Habitaciones", "value": [rooms]},
+        {"key": "Baños", "value": [bathrooms]},
+        {"key": "Estacionamiento", "value": [parking]},
+        {"key": "Bodega", "value": [storage]},
+        {"key": "Area", "value": [area]},
+        {"key": "Precio máximo", "value": [max price]},
+        {"key": "Precio mínimo", "value": [min price]},
+        {"key": "Amigable con animales", "value": [petfriendly]}
+      ]
     }
     Sometimes the commune could appear as an abbreviation, so you have to look for the one that is the best fit.
   
@@ -77,14 +76,14 @@ query:
 
     Keep in mind that the monthly income could be in words, we are looking for the number, for example doscientos 80mil is 280.000.
 
-    Finally, return your response as a JSON with the following structure:
+    Finally, return your response as a JSON with the following structure and if you dont get some data change the value to false, otherwise return the value:
     {
       "response": [
-        {"key": "Renta", "value": ""},
-        {"key": "Valor de la propiedad", "value": ""},
-        {"key": "Monto solicitado", "value": ""},
-        {"key": "Pago inicial", "value": ""},
-        {"key": "Plazo de hipoteca", "value": ""},
-        {"key": "Tipo de propiedad", "value": ""}
+        {"key": "Renta", "value": [monthly income]},
+        {"key": "Valor de la propiedad", "value": [property value]},
+        {"key": "Monto solicitado", "value": [amount requested]},
+        {"key": "Pago inicial", "value": [initial payment]},
+        {"key": "Plazo de hipoteca", "value": [mortgage term]},
+        {"key": "Tipo de propiedad", "value": [property type]}
       ]
     }
