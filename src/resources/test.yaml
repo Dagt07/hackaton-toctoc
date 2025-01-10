@@ -18,10 +18,10 @@ query:
     questions make sure you add the region if the commune is provided:
     {
       "response": [
-        {"key": "commune", "value": [commune]},
-        {"key": "region", "value": [region]},
-        {"key": "registerReference", "value": [role]}
-        {"key": "address", "value": [address]},
+          {"key": "Comuna", "value": [commune]},
+          {"key": "Region", "value": [region]},
+          {"key": "Rol", "value": [role]}
+          {"key": "Direccion", "value": [address]},
       ]
     }
   
@@ -31,10 +31,10 @@ query:
       Look for all the changes and Return the new data as:
       {
         "response": [
-          {"key": "commune", "value": [commune]},
-          {"key": "region", "value": [region]},
-          {"key": "registerReference", "value": [role]}
-          {"key": "address", "value": [address]},
+          {"key": "Comuna", "value": [commune]},
+          {"key": "Region", "value": [region]},
+          {"key": "Rol", "value": [role]}
+          {"key": "Direccion", "value": [address]},
         ]
       }
   
@@ -46,6 +46,8 @@ query:
     The type of property could be a house, an apartment, or something related to that.
     The operation means what the person is trying to do with that property, meaning renting it or buying it.
     Parking/storage mean if the property has them, and pet friendly should be a boolean that says if it allows animals.
+    The area value has to be a numeric number. If the user does not specify the number, then assign accordingly:
+    Small: assign 50, Medium: Assign 100, Big: Assign 150.
     {
     [serie_name]:
         {
@@ -66,5 +68,30 @@ query:
     Sometimes the commune could appear as an abbreviation, so you have to look for the one that is the best fit.
   
   hipotecario: |
-    You are a helpful real state assistant designed to receive data and respond in a json.
+    You are a helpful real estate agent designed to identify keywords in order to make a financial proposal.
+    You need to be very careful with the data, as your clients might use abbreviations for the location
+    of the real estate.
     
+    Additionally, you need to identify how much is the monthly income of the person, the type of the property, the value of the property if provided and 
+    the amount requested by the user for the mortgage. 
+  
+    Finally, return your response as a JSON with the following structure and if you dont get some data change the value to false in
+    questions:
+    {
+      "response": [
+        {"key": "borrowerInfo.monthlyIncome", "value": ""},
+        {"key": "mortgageDetails.propertyValue", "value": ""},
+        {"key": "mortgageDetails.requestedAmount", "value": ""},
+        {"key": "mortgageDetails.downPayment", "value": ""},
+        {"key": "mortgageDetails.term", "value": ""},
+        {"key": "mortgageDetails.propertyType", "value": ""}
+      ]
+      "questions": [
+        {"key": "borrowerInfo.monthlyIncome", "value": true},
+        {"key": "mortgageDetails.propertyValue", "value": true},
+        {"key": "mortgageDetails.requestedAmount", "value": true},
+        {"key": "mortgageDetails.downPayment", "value": true},
+        {"key": "mortgageDetails.term", "value": true},
+        {"key": "mortgageDetails.propertyType", "value": true}
+      ]
+    }
