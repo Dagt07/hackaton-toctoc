@@ -51,7 +51,6 @@ class ResponseAI:
         missing_fields = []
 
         for item in answer.get("response", []):
-            print
             if item['value'] is False:  # Comprobamos si el valor es False
                 missing_fields.append(item['key'])
 
@@ -59,8 +58,16 @@ class ResponseAI:
         if missing_fields:
             missing_fields_str = ', '.join(missing_fields)
             message = f"Parece que falta información en los siguientes campos: {missing_fields_str}. ¿Podrías proporcionarnos los datos faltantes?"
+
+            print("missing_fields", missing_fields)
+
+            if len(missing_fields) == 1 and (missing_fields[0] == "Rol" or missing_fields[0] == "Direccion"):
+                print("entramos en el if del len")
+                message = "¡Gracias por toda la información! Todo está completo."
+                
         else:
             message = "¡Gracias por toda la información! Todo está completo."
+            #llamar api
         return message
 
 
@@ -78,7 +85,6 @@ class ResponseAI:
 
         if query_name == "tasar":
             MESSAGE = self.queries.get("tasar")
-            data += "en la comuna Las condes"
             response = self._complete_response(data, MESSAGE)
             data = response.choices[0].message.content
 

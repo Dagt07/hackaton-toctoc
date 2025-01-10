@@ -22,8 +22,6 @@ def send_message():
     # Guardar el mensaje del usuario en el historial
     chat_history.append({"role": "user", "message": user_message})
     user_prompts += user_message + " "
-    print("printeando los user prompts", user_prompts)
-
 
     try:
         # Extraer la información del mensaje del usuario
