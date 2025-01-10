@@ -1,19 +1,15 @@
 import json
 
 from bot_llm.response_ai import ResponseAI
-
-def extract_data_from_message(data):
-    bot = ResponseAI()
-    
-    answer = bot.first_stage(
-        data = data,
-    )
-
-    if (answer) == "":
-        answer = "{Error: No Answer}"
-
+bot = ResponseAI()
+def extract_data_from_message(data, intent = ""):
+    if (intent) != "":
+        answer = bot.query_LLM(
+            query_name = intent,
+            data = data,
+        )
     return answer
+def extract_data_ft_message(data):
+    answer = bot.first_stage(data)
+    return answer 
 
-if __name__ == "__main__":
-    data = "Hola, necesito saber el valor de una parcela"
-    print(extract_data_from_message(data))
