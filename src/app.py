@@ -1,36 +1,30 @@
-# save this as app.py
-from flask import Flask, request
-from markupsafe import escape
+from flask import Flask, render_template, request, jsonify
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="app/templates", static_folder="app/static")
 
-@app.route('/')
-def hello():
-    return "Hola Mundo"
+# Lista para almacenar el historial del chat
+chat_history = []
 
-@app.route('/<name>')
-def helloName(name):
-    return f"Hello, {escape(name)}!"
+@app.route("/", methods=["GET"])
+def index():
+    return render_template("index.html")
 
-@app.route('/saludo')
-def helloParameter():
-    name = request.args.get("name", "World")
-    return f'Hello, {escape(name)}!'
+@app.route("/send_message", methods=["POST"])
+def send_message():
+    global chat_history
 
-@app.route('/user/<username>')
-def show_user_profile(username):
-    # show the user profile for that user
-    return f'User {escape(username)}'
+    # Obtener el mensaje del usuario del cuerpo de la solicitud
+    user_message = request.json.get("message", "")
 
-@app.route('/post/<int:post_id>')
-def show_post(post_id):
-    # show the post with the given id, the id is an integer
-    return f'Post {post_id}'
+    # Guardar el mensaje del usuario en el historial
+    chat_history.append({"role": "user", "message": user_message})
 
-@app.route('/path/<path:subpath>')
-def show_subpath(subpath):
-    # show the subpath after /path/
-    return f'Subpath {escape(subpath)}'
+    # Respuesta genérica del bot
+    bot_response = "This is a generic response. Thank you for your message!"
+    chat_history.append({"role": "bot", "message": bot_response})
+
+    # Devolver la respuesta del bot como JSON
+    return jsonify({"response": bot_response, "chat_history": chat_history})
 
 if __name__ == "__main__":
     app.run(debug=True)
