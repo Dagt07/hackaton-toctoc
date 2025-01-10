@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify
+from main import extract_data_from_message
 
 app = Flask(__name__, template_folder="app/templates", static_folder="app/static")
 
@@ -19,8 +20,15 @@ def send_message():
     # Guardar el mensaje del usuario en el historial
     chat_history.append({"role": "user", "message": user_message})
 
-    # Respuesta genérica del bot
-    bot_response = "This is a generic response. Thank you for your message!"
+    try:
+        # Extraer la información del mensaje del usuario
+        data = extract_data_from_message(user_message)
+        bot_response = data
+    except Exception as e:
+        print(e)
+        bot_response = "An error occurred while processing the message. Please try again."
+
+
     chat_history.append({"role": "bot", "message": bot_response})
 
     # Devolver la respuesta del bot como JSON
