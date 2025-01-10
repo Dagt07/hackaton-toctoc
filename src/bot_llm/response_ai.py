@@ -19,7 +19,6 @@ class ResponseAI:
         stream.close()
 
     def _complete_response(self, data, system_message=""):
-        print("Bot llamado")
         response = self.client.chat.completions.create(
             temperature=self.temperature,
             model="gpt-4o",
@@ -42,8 +41,28 @@ class ResponseAI:
         response = self._complete_response(data, FIRST_STAGE_MESSAGE)
         intent_dict = response.choices[0].message.content
         json_intent = json.loads(intent_dict)
-        print(json_intent)
-        self.query_LLM(json_intent["intent"], data)
+        answer = self.query_LLM(json_intent["intent"], data)
+        answer = json.loads(answer)
+
+        
+        # Revisamos si hay campos con valores vacíos
+        print(answer)
+        
+        missing_fields = []
+
+        for item in answer.get("response", []):
+            print
+            if item['value'] is False:  # Comprobamos si el valor es False
+                missing_fields.append(item['key'])
+
+        # Si hay campos faltantes, generar un mensaje amable
+        if missing_fields:
+            missing_fields_str = ', '.join(missing_fields)
+            message = f"Parece que falta información en los siguientes campos: {missing_fields_str}. ¿Podrías proporcionarnos los datos faltantes?"
+        else:
+            message = "¡Gracias por toda la información! Todo está completo."
+        return message
+
 
     # Probably this method could replace every upper method
     def query_LLM(self, query_name, data):
@@ -62,12 +81,12 @@ class ResponseAI:
             data += "en la comuna Las condes"
             response = self._complete_response(data, MESSAGE)
             data = response.choices[0].message.content
-            print(data)
 
         if query_name == "hipotecario":
             MESSAGE = self.queries.get("hipotecario")
-            data += "algo" # Use the chatbot here
+            data += "mi renta es de 1millon 500mil pesos" # Use the chatbot here
             response = self._complete_response(data, MESSAGE)
             data = response.choices[0].message.content
+            print(data)
 
         return response.choices[0].message.content
