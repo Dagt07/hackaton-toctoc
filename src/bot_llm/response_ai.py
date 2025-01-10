@@ -1820,11 +1820,22 @@ class ResponseAI:
                             break
 
                     payload = {}
-
                     role_value = next((item["value"] for item in answer["response"] if item["key"] == "Rol"), None)
                     headers = {
                     'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkdlcmFyZG8gTXXDsW96IiwiaWF0IjoxNTE2MjM5MDIyLCJ1c2VyX2lkIjoiMTIzNCJ9.FpthiZ_xC_U0RlVnlvR-axVKCmUVoN200VXJ6FD8mAU'
                     }
+                    if not role_value:
+                        direccion = next((item["value"] for item in answer["response"] if item["key"] == "Direccion"), None)
+                        print(direccion)
+                        direccion = direccion.split(" ")
+                        direccion = "%".join(direccion)
+                        # Buscar en la API que transforma de direccion a rol
+                        dir_api = f"https://seeker.toctoc.com/autocomplete/address?search={direccion}&idcommune={comuna_id}"
+                        response = requests.request("GET", dir_api, headers=headers, data=payload)
+                        response = response.json()
+                        #rol_value = response[0]["rol"]
+                        print(response)
+                        #role_value = next((item["value"] for item in answer["response"] if item["key"] == "rol"), None)
                     url = f"https://gw.toctoc.com/1.0/info/role?role={role_value}&idCommune={comuna_id}"
                     print(url)
                     response = requests.request("GET", url, headers=headers, data=payload)
