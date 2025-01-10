@@ -12,9 +12,8 @@ def extract_data_from_message(data):
     if (answer) == "":
         answer = "{Error: No Answer}"
 
-    print(answer)
-    return None
+    return answer
 
 if __name__ == "__main__":
-    data = "Hola, necesito saber cuanto vale mi casa"
+    data = "Hola, necesito buscar una casa"
     print(extract_data_from_message(data))

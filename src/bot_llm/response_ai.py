@@ -52,8 +52,10 @@ class ResponseAI:
 
         if query_name == "buscar":
             MESSAGE = self.queries.get("buscar")
+            data += "algo" # Use the chatbot here
             response = self._complete_response(data, MESSAGE)
             data = response.choices[0].message.content
+            print(data)
 
         if query_name == "tasar":
             MESSAGE = self.queries.get("tasar")
@@ -64,6 +66,7 @@ class ResponseAI:
 
         if query_name == "hipotecario":
             MESSAGE = self.queries.get("hipotecario")
+            data += "algo" # Use the chatbot here
             response = self._complete_response(data, MESSAGE)
             data = response.choices[0].message.content
 
