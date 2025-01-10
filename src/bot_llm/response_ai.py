@@ -1821,7 +1821,18 @@ class ResponseAI:
                 url = f"https://gw.toctoc.com/1.0/info/role?role={role_value}&idCommune={comuna_id}"
                 print(url)
                 response = requests.request("GET", url, headers=headers, data=payload)
-                print(response)
+                response = response.json()
+                latitude, longitude = response["data"]["location"]["coordinates"][1], response["data"]["location"]["coordinates"][0]
+                property_type = response["data"]["housingType"]["housingTypeName"]
+                usable_area = response["data"]["information"]["areaofConstructionLine"]
+                #using this as an example ("https://gw.toctoc.com/1.0/valorization/appraisal/sale?lat=40.7128&long=-74.006&propertyFamilyTypeId=1&usableArea=10", requestOptions)
+                url = f"https://gw.toctoc.com/1.0/valorization/appraisal/sale?lat={latitude}&long={longitude}&propertyFamilyTypeId=1&usableArea={usable_area}"
+                response = requests.request("GET", url, headers=headers, data=payload)
+                response = response.json()
+                tasamin = response["data"]["minPrice"]
+                tasamax = response["data"]["maxPrice"]
+                message = f"El precio de tu propiedad oscila entre {tasamin} y {tasamax} UF"
+                print(message)
         else:
             message = "¡Gracias por toda la información! Todo está completo."
             #llamar api
