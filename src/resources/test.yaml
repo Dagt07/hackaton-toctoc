@@ -36,12 +36,6 @@ query:
           {"key": "registerReference", "value": [role]}
           {"key": "address", "value": [address]},
         ]
-        "questions": [
-          {"key": "commune", "value": true},
-          {"key": "region", "value": true},
-          {"key": "registerReference", "value": true},
-          {"key": "address", "value": true},
-          ]
       }
   
   buscar: |
