@@ -5,6 +5,7 @@ app = Flask(__name__, template_folder="app/templates", static_folder="app/static
 
 # Lista para almacenar el historial del chat
 chat_history = []
+user_prompts = ""
 
 @app.route("/", methods=["GET"])
 def index():
@@ -13,16 +14,20 @@ def index():
 @app.route("/send_message", methods=["POST"])
 def send_message():
     global chat_history
+    global user_prompts
 
     # Obtener el mensaje del usuario del cuerpo de la solicitud
     user_message = request.json.get("message", "")
 
     # Guardar el mensaje del usuario en el historial
     chat_history.append({"role": "user", "message": user_message})
+    user_prompts += user_message + " "
+    print("printeando los user prompts", user_prompts)
+
 
     try:
         # Extraer la información del mensaje del usuario
-        data = extract_data_from_message(user_message)
+        data = extract_data_from_message(user_prompts)
         bot_response = data
     except Exception as e:
         print(e)
