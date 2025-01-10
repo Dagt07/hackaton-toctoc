@@ -1,0 +1,21 @@
+{
+    "search": "Quiero buscar una propiedad",
+    "customResponse": "",
+    "intent": "Buscar propiedad",
+    "workflow": "Buscar",
+    "response": [
+        {"key": "commune", "value": ""},
+        {"key": "region", "value": ""},
+        {"key": "typeOfProperty", "value": ""},
+        {"key": "typeOfOperation", "value": ""},
+        {"key": "bedrooms", "value": ""},
+        {"key": "bathrooms", "value": ""},
+        {"key": "parking", "value": ""},
+        {"key": "storage", "value": ""},
+        {"key": "area", "value": ""},
+        {"key": "priceMax", "value": ""},
+        {"key": "priceMin", "value": ""},
+        {"key": "petFriendly", "value": ""}
+    ],
+    "questions": [{"key": "", "value": "bool"}]
+} 

@@ -1,0 +1,14 @@
+{
+    "search": "Quiero tasar una propiedad",
+    "customResponse": "",
+    "intent": "Tasar propiedad",
+    "workflow": "Tasar",
+    "response": [
+        {"key": "commune", "value": ""},
+        {"key": "region", "value": ""},
+        {"key": "registerReference", "value": ""}, // ROL
+        {"key": "address", "value": ""},
+        {"key": "totalArea", "value": ""}
+    ],
+    "questions": [{"key": "", "value": "bool"}]
+} 
