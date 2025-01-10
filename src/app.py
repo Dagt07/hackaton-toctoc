@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, jsonify
-from main import extract_data_from_message
+from main import extract_data_from_message, extract_data_ft_message
 
 app = Flask(__name__, template_folder="app/templates", static_folder="app/static")
 
 # Lista para almacenar el historial del chat
 chat_history = []
 user_prompts = ""
+intent = ""
 
 @app.route("/", methods=["GET"])
 def index():
@@ -25,7 +26,11 @@ def send_message():
 
     try:
         # Extraer la información del mensaje del usuario
-        data = extract_data_from_message(user_prompts)
+        if intent == "":
+            intent = extract_data_ft_message(user_prompts)
+            data = extract_data_from_message(user_message, intent)
+        else:
+            data = extract_data_from_message(user_message, intent)
         bot_response = data
     except Exception as e:
         print(e)

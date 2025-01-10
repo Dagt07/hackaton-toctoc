@@ -6,14 +6,14 @@ import json
 from dotenv import load_dotenv
 
 load_dotenv() # Load environment variables from .env file
-
 class ResponseAI:
+
     def __init__(self, temperature=0):
         self.key = os.environ["OPENAI_KEY"]
         self.client = OpenAI(api_key=self.key)
         self.temperature = temperature
         self.prefix_system_message = ""
-
+        self.contextdata = ""
         stream = open(os.path.join(ROOT_DIR, "resources/test.yaml"), "r")
         self.queries = yaml.safe_load(stream).get("query")
         stream.close()
@@ -37,12 +37,12 @@ class ResponseAI:
         return response
 
     def first_stage(self, data):
+        self.contextdata += data
         FIRST_STAGE_MESSAGE = self.queries.get("preparse")
         response = self._complete_response(data, FIRST_STAGE_MESSAGE)
         intent_dict = response.choices[0].message.content
         json_intent = json.loads(intent_dict)
-        answer = self.query_LLM(json_intent["intent"], data)
-        answer = json.loads(answer)
+        return json_intent["intent"]
 
         
         # Revisamos si hay campos con valores vacíos
@@ -75,24 +75,25 @@ class ResponseAI:
     def query_LLM(self, query_name, data):
         query = self.queries.get(query_name)
         response = ""
-
+        boolval= False
+        self.contextdata += data
         if query_name == "buscar":
             MESSAGE = self.queries.get("buscar")
             data += "algo" # Use the chatbot here
-            response = self._complete_response(data, MESSAGE)
+            response = self._complete_response(self.contextdata, MESSAGE)
             data = response.choices[0].message.content
             print(data)
-
         if query_name == "tasar":
             MESSAGE = self.queries.get("tasar")
+            
             response = self._complete_response(data, MESSAGE)
             data = response.choices[0].message.content
 
         if query_name == "hipotecario":
             MESSAGE = self.queries.get("hipotecario")
-            data += "mi renta es de 1millon 500mil pesos" # Use the chatbot here
-            response = self._complete_response(data, MESSAGE)
+
+            response = self._complete_response(self.contextdata, MESSAGE)
             data = response.choices[0].message.content
             print(data)
 
-        return response.choices[0].message.content
+        return boolval, response.choices[0].message.content
