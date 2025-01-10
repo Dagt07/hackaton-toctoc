@@ -15,5 +15,5 @@ def extract_data_from_message(data):
     return answer
 
 if __name__ == "__main__":
-    data = "Hola, necesito buscar una casa"
+    data = "Hola, necesito plata pa una casa"
     print(extract_data_from_message(data))
