@@ -5,8 +5,7 @@ from bot_llm.response_ai import ResponseAI
 def extract_data_from_message(data):
     bot = ResponseAI()
     
-    answer = bot.query_LLM(
-        querie_name = "preparse",
+    answer = bot.first_stage(
         data = data,
     )
 

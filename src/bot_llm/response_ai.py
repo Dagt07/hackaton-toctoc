@@ -2,7 +2,9 @@ from openai import OpenAI
 from definitions import ROOT_DIR
 import yaml
 import os
+from dotenv import load_dotenv
 
+load_dotenv() # Load environment variables from .env file
 
 class ResponseAI:
     def __init__(self, temperature=0):
@@ -11,7 +13,7 @@ class ResponseAI:
         self.temperature = temperature
         self.prefix_system_message = ""
 
-        stream = open(ROOT_DIR + "/resources/yaml/queries.yaml", "r")
+        stream = open("./test.yaml", "r")
         self.queries = yaml.safe_load(stream).get("query")
         stream.close()
 
@@ -19,7 +21,7 @@ class ResponseAI:
         print("Bot llamado")
         response = self.client.chat.completions.create(
             temperature=self.temperature,
-            model="gpt-4-1106-preview",
+            model="gpt-4o",
             response_format={"type": "json_object"},
             messages=[
                 {
