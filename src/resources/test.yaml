@@ -51,18 +51,18 @@ query:
     {
     [serie_name]:
         {
-            commune: [commune]
-            region: [region]
-            typeOfProperty: [type]
-            typeOfOperation: [operation]
-            bedrooms: [number]%
-            bathrooms: [number]%
-            parking: [parking]
-            storage: [storage]
-            area: [number]%
-            priceMax: [number]%
-            priceMin: [number]%
-            petFriendly: [petfriendly]
+            Comuna: [commune]
+            Region: [region]
+            Tipo de propiedad: [type]
+            Tipo de contrato: [operation]
+            Habitaciones: [number]%
+            Baños: [number]%
+            Estacionamiento: [parking]
+            Bodega: [storage]
+            Area: [number]%
+            Precio máximo: [number]%
+            Precio mínimo: [number]%
+            Amigable con animales: [petfriendly]
         }
     }
     Sometimes the commune could appear as an abbreviation, so you have to look for the one that is the best fit.
