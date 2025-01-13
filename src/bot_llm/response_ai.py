@@ -1834,12 +1834,16 @@ class ResponseAI:
                         response = requests.request("GET", dir_api, headers=headers, data=payload)
                         response = response.json()
                         #rol_value = response[0]["rol"]
-                        print(response)
+                        role_value = response[0]["rol"]
+                        role_subvalue = response[0]["subrol"]
+                        print(role_value)
+                        role_value = str(role_value) + "-" + str(role_subvalue)
                         #role_value = next((item["value"] for item in answer["response"] if item["key"] == "rol"), None)
                     url = f"https://gw.toctoc.com/1.0/info/role?role={role_value}&idCommune={comuna_id}"
                     print(url)
                     response = requests.request("GET", url, headers=headers, data=payload)
                     response = response.json()
+                    print(response)
                     latitude, longitude = response["data"]["location"]["coordinates"][1], response["data"]["location"]["coordinates"][0]
                     property_type = response["data"]["housingType"]["housingTypeName"]
                     usable_area = response["data"]["information"]["areaofConstructionLine"]
@@ -1853,7 +1857,6 @@ class ResponseAI:
                     print(message)
         else:
             message = "¡Gracias por toda la información! Todo está completo."
-            #llamar api
         return message
 
 

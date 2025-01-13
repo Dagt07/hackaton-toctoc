@@ -27,9 +27,17 @@ def send_message():
         # Extraer la información del mensaje del usuario
         data = extract_data_from_message(user_prompts)
         bot_response = data
+
+        if "El precio de tu propiedad oscila" in bot_response:
+            user_prompts = ""
+
+        if "¡Gracias por toda la información!" in bot_response:
+            user_prompts = ""
+        
     except Exception as e:
         print(e)
         bot_response = "An error occurred while processing the message. Please try again."
+        user_prompts = ""
 
 
     chat_history.append({"role": "bot", "message": bot_response})

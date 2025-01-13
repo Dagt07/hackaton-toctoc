@@ -47,8 +47,7 @@ query:
     The operation means what the person is trying to do with that property, meaning renting it or buying it, THIS IS VERY IMPORTANT.
     Parking/storage mean if the property has them, and pet friendly should be a boolean that says if it allows animals.
     The area value has to be a numeric number. If the user does not specify the number, then assign accordingly:
-    Small: assign 50, Medium: Assign 100, Big: Assign 150. Also if you dont get some data change the value to false, otherwise return the value:
-    {
+    Small: assign 50, Medium: Assign 100, Big: Assign 150. If you dont get some data change the value to false:
       "response": [
         {"key": "Comuna", "value": [commune]},
         {"key": "Region", "value": [region]},
